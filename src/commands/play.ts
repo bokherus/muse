@@ -68,6 +68,7 @@ export default class implements Command {
     }
 
     const addToFrontOfQueue = args[args.length - 1] === 'i' || args[args.length - 1] === 'immediate';
+    const instantPlay = args[args.length - 1] === 'now';
 
     const newSongs: Array<Except<QueuedSong, 'addedInChannelId'>> = [];
     let extraMsg = '';
@@ -123,7 +124,7 @@ export default class implements Command {
       }
     } catch (_: unknown) {
       // Not a URL, must search YouTube
-      const query = addToFrontOfQueue ? args.slice(0, args.length - 1).join(' ') : args.join(' ');
+      const query = addToFrontOfQueue || instantPlay ? args.slice(0, args.length - 1).join(' ') : args.join(' ');
 
       const song = await this.getSongs.youtubeVideoSearch(query);
 
@@ -142,7 +143,7 @@ export default class implements Command {
     }
 
     newSongs.forEach(song => {
-      player.add({...song, addedInChannelId: msg.channel.id}, {immediate: addToFrontOfQueue});
+      player.add({...song, addedInChannelId: msg.channel.id}, {immediate: addToFrontOfQueue || instantPlay, now: instantPlay});
     });
 
     const firstSong = newSongs[0];
@@ -152,7 +153,8 @@ export default class implements Command {
     }
 
     if (newSongs.length === 1) {
-      await res.stop(`u betcha, **${firstSong.title}** added to the${addToFrontOfQueue ? ' front of the' : ''} queue${extraMsg}`);
+      if (instantPlay) await res.stop(`Playing **${firstSong.title}**`);
+      else await res.stop(`u betcha, **${firstSong.title}** added to the${addToFrontOfQueue ? ' front of the' : ''} queue${extraMsg}`);
     } else {
       await res.stop(`u betcha, **${firstSong.title}** and ${newSongs.length - 1} other songs were added to the queue${extraMsg}`);
     }

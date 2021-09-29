@@ -229,7 +229,7 @@ export default class {
     return this.queue.slice(this.queuePosition + 1);
   }
 
-  add(song: QueuedSong, {immediate = false} = {}): void {
+  add(song: QueuedSong, {immediate = false, now = false} = {}): void {
     if (song.playlist) {
       // Add to end of queue
       this.queue.push(song);
@@ -250,6 +250,7 @@ export default class {
       }
 
       this.queue = [...this.queue.slice(0, insertAt), song, ...this.queue.slice(insertAt)];
+      if (now) this.forward(1)
     }
   }
 
