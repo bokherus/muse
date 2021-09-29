@@ -237,7 +237,7 @@ export default class {
       // Not from playlist, add immediately
       let insertAt = this.queuePosition + 1;
 
-      if (!immediate) {
+      if (!immediate && !now) {
       // Loop until playlist song
         this.queue.some(song => {
           if (song.playlist) {

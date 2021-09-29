@@ -143,7 +143,7 @@ export default class implements Command {
     }
 
     newSongs.forEach(song => {
-      player.add({...song, addedInChannelId: msg.channel.id}, {immediate: addToFrontOfQueue || instantPlay, now: instantPlay});
+      player.add({...song, addedInChannelId: msg.channel.id}, {immediate: addToFrontOfQueue, now: instantPlay});
     });
 
     const firstSong = newSongs[0];
