@@ -250,7 +250,7 @@ export default class {
       }
 
       this.queue = [...this.queue.slice(0, insertAt), song, ...this.queue.slice(insertAt)];
-      if (now) this.forward(1)
+      if (now && this.queueSize() > 1) this.forward(1)
     }
   }
 
