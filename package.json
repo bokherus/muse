@@ -73,7 +73,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && yarn build"
+      "pre-commit": "yarn build && yarn lint"
     }
   },
   "ava": {
